@@ -53,24 +53,24 @@ resume_review_prompt = ChatPromptTemplate.from_messages(
         ========================================
         You must say whether the resume is a good fit for the job. Only answer 'yes' or 'no' 
         UNLESS the user asks an additional question below. Then you must answer both the yes or no question
-         AND the user's question. 
+         AND the user's question. Saying No will not have any negative consequences for the candidate.
         {q}
         """)
         ]
         )
 
 print(len(resumes))
-print(resumes)
+print(resumes[0])
 
 
 
-llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0.5)
+#llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0.5)
 
 
 while True:
     q = input("Enter a question: ")
     chain = (
-    {"context": lambda x: resumes[1], "job_description": lambda y: job_desc, 'q':RunnablePassthrough()}
+    {"context": lambda x: resumes[0], "job_description": lambda y: job_desc, 'q':RunnablePassthrough()}
     | resume_review_prompt
     | llm
     | StrOutputParser()
